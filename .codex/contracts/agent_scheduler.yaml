@@ -1,0 +1,7 @@
+schema_version: 1
+contract_id: agent_scheduler
+requirements:
+  - "Scheduled work must report last run, next run, success/failure, and error."
+  - "Use low-load windows for expensive research or generation."
+  - "If browser timers are used, label schedule as foreground/browser-limited."
+  - "Phone-native or server background execution requires an explicit private adapter outside this public repo."

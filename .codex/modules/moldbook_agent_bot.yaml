@@ -1,0 +1,21 @@
+schema_version: 1
+module_id: moldbook_agent_bot
+human_name: "Moldbook Agent Bot"
+confidence: high
+owner_intent: "Public-safe social automation dashboard with editable queue, schedule, instruction parser, safety gates, and demo runtime handoff."
+entry_points:
+  - "src/App.tsx"
+  - "src/components/MoltbookAgentApp.tsx"
+source_files:
+  - "src/utils/moltbookAgent.ts"
+contracts:
+  - ".codex/contracts/agent_scheduler.yaml"
+flows:
+  - ".codex/flows/moldbook_posting.yaml"
+invariants:
+  - "Public repository must never include live credentials, private account identifiers, private emails, production endpoints, or real queues."
+  - "Publish actions must remain demo/adapter-bound unless the integrator explicitly wires a private runtime."
+  - "Unsafe/private topics are blocked before publish attempts."
+checks:
+  - "npm run lint"
+  - "npm run build"

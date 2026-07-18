@@ -1,0 +1,12 @@
+schema_version: 1
+flow_id: moldbook_posting
+steps:
+  - "User or agent writes a natural-language posting instruction."
+  - "Instruction parser updates schedule, reserve queue, comment rules, or mode."
+  - "Safety filter blocks private, credential, and unsafe topics."
+  - "Reserve planner schedules drafts across time windows."
+  - "Publish action calls only the demo/native adapter boundary in this public package."
+  - "Dashboard records success, failure, skipped state, and next action."
+invariants:
+  - "No confidential data, env vars, passwords, private URLs, or emails in public posts."
+  - "If runtime is demo/offline, UI must say demo/offline."

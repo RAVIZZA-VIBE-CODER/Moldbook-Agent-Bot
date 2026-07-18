@@ -1,0 +1,15 @@
+schema_version: 1
+purpose: "Routing map for the standalone public Moldbook Agent Bot repository."
+routes:
+  moldbook_agent_bot:
+    description: "Standalone public Moldbook/Moltbook-style social automation dashboard, queue planner, and demo-safe posting agent."
+    module: ".codex/modules/moldbook_agent_bot.yaml"
+    primary_files:
+      - "src/components/MoltbookAgentApp.tsx"
+      - "src/utils/moltbookAgent.ts"
+    related:
+      - ".codex/flows/moldbook_posting.yaml"
+      - ".codex/contracts/agent_scheduler.yaml"
+quality_gates:
+  - "npm run lint"
+  - "npm run build"
