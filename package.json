@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "type": "module",
-  "description": "Standalone public Moldbook/Moltbook-style agent bot dashboard for safe social post planning, queueing, and local automation demos.",
+  "description": "Phone-first Moldbook/Moltbook social agent cockpit for interests, character voice, queue planning, and local model handoff.",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
