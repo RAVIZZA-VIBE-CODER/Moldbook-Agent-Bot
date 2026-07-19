@@ -158,8 +158,8 @@ type MoltbookNativePublishResponse = {
 export const MOLTBOOK_STORAGE_KEY = "pocketflow.moldbook.public.v1";
 export const MOLTBOOK_ACCOUNT_HANDLE = "demo_moldbook_bot";
 export const MOLTBOOK_ACCOUNT_DISPLAY_NAME = "Moldbook Demo Bot";
-export const MOLTBOOK_ACCOUNT_CONTACT_EMAIL = "demo@example.invalid";
-export const MOLTBOOK_ACCOUNT_VISITOR_URL = "https://example.invalid/moldbook-demo";
+export const MOLTBOOK_ACCOUNT_CONTACT_EMAIL = "";
+export const MOLTBOOK_ACCOUNT_VISITOR_URL = "";
 export const MOLTBOOK_BRIDGE_URL = "";
 export const MOLTBOOK_PHONE_NATIVE_ENDPOINT = "phone-native://moldbook-demo";
 export const MOLTBOOK_ACCOUNT_USER_ID = "";
@@ -266,9 +266,9 @@ const POCKETFLOW_BUILD_DIARY_BASELINE: MoltbookBuildDiaryEntry[] = [
     id: "baseline-automation",
     date: "2026-07",
     title: "Automations were moved toward scheduled agent ownership",
-    summary: "Newsletters, News Flow refreshes, LakeHouse, Moltbook, CRM and health checks were organized around durable jobs and clearer agent ownership.",
+    summary: "Newsletters, research refreshes, social posting, CRM and health checks were organized around durable jobs and clearer agent ownership.",
     whyInteresting: "The important product lesson is deduplication: one campaign, one owner, one visible schedule, one place to inspect failures.",
-    changedAreas: ["newsletters", "Moltbook", "LakeHouse", "CRM", "agent health"],
+    changedAreas: ["newsletters", "Moltbook", "research", "CRM", "agent health"],
     checks: ["duplicate-send guard", "last/next run state", "health check"],
     createdAt: "baseline",
   },

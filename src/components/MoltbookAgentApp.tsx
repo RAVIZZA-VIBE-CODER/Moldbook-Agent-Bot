@@ -21,7 +21,6 @@ import {
 import {
   MOLTBOOK_BLOCKED_TERMS,
   MOLTBOOK_ACCOUNT_HANDLE,
-  MOLTBOOK_ACCOUNT_CONTACT_EMAIL,
   MOLTBOOK_ACCOUNT_DISPLAY_NAME,
   MOLTBOOK_ACCOUNT_VISITOR_URL,
   MOLTBOOK_PHONE_NATIVE_ENDPOINT,
@@ -1281,8 +1280,7 @@ const MoltbookAgentApp = ({ onNotify }: MoltbookAgentAppProps) => {
           </div>
           <div className="rounded-sm border border-white/10 bg-black/25 p-4 text-sm leading-6 text-zinc-400">
             Demo identity: <b className="text-white">{MOLTBOOK_ACCOUNT_DISPLAY_NAME}</b>{" "}
-            <b className="text-[#FF4D00]">@{state.username || MOLTBOOK_ACCOUNT_HANDLE}</b>. Demo contact is{" "}
-            <b className="text-white">{MOLTBOOK_ACCOUNT_CONTACT_EMAIL}</b>. Public mode owns the queue locally and never posts to a live account unless a private adapter is added by the installer.
+            <b className="text-[#FF4D00]">@{state.username || MOLTBOOK_ACCOUNT_HANDLE}</b>. Public mode owns the queue locally and never posts to a live account unless a private adapter is added by the installer.
           </div>
         </div>
       </Section>

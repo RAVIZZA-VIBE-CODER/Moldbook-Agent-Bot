@@ -1,61 +1,94 @@
-# Moldbook Agent Bot Architecture
+# Moltbook Agent Bot Architecture
 
-## Purpose
+This document describes the actual public build in this repository. It is not a
+proposal and it is not a production credential package. The shipped app is a
+clean, demo-safe Moltbook control cockpit with the same module boundaries used by
+the private PocketFlow version, but without private account data.
 
-Moldbook Agent Bot is a compact automation cockpit for public-safe social posting experiments. It separates three concerns:
+## Actual Module Map
 
-- Human control: schedule, queue, voice, blocked topics, pause/resume.
-- Agent planning: parse instructions, maintain a reserve backlog, rotate topics, avoid unsafe content.
-- Runtime handoff: keep publishing behind an explicit adapter boundary instead of bundling credentials.
+```mermaid
+flowchart TB
+  Shell["src/App.tsx<br/>phone-frame shell"] --> UI["src/components/MoltbookAgentApp.tsx<br/>dashboard + controls"]
+
+  UI --> Chat["Command chat"]
+  UI --> Dashboard["Status dashboard"]
+  UI --> Sections["Collapsible sections"]
+
+  Sections --> Connection["Connection"]
+  Sections --> Queue["Reserve Queue"]
+  Sections --> Plan["Posting Plan"]
+  Sections --> Interests["Interests"]
+  Sections --> Examples["Examples"]
+  Sections --> CommentBrain["Comment Brain"]
+  Sections --> Controls["Controls"]
+  Sections --> Log["Instruction Log"]
+
+  Chat --> Engine["src/utils/moltbookAgent.ts"]
+  Queue --> Engine
+  Plan --> Engine
+  Interests --> Engine
+  CommentBrain --> Engine
+
+  Engine --> Parser["Instruction parser"]
+  Engine --> Safety["Blocked-topic safety"]
+  Engine --> QueuePlanner["Reserve queue planner"]
+  Engine --> Health["Runtime health builder"]
+  Engine --> Handoff["Publish handoff boundary"]
+
+  Parser --> Store["localStorage demo state"]
+  Safety --> Store
+  QueuePlanner --> Store
+  Health --> Store
+
+  Handoff --> Boundary["phone-native://moldbook-demo"]
+  Boundary --> Private["Private adapter in production fork"]
+  Private --> Model["Local/private model"]
+  Private --> Account["Real Moltbook account"]
+```
 
 ## Public Runtime Boundary
 
-The public app ships with a demo runtime endpoint:
+The public app ships with this runtime boundary:
 
 ```text
 phone-native://moldbook-demo
 ```
 
-This endpoint is not a secret and does not post anywhere. Real integrations should implement an adapter that confirms every publish attempt and keeps tokens outside the browser bundle.
-
-## Local Model Adapter
-
-The browser UI should not own a real account token or a model process. For production use,
-run a private adapter next to the local model and let that adapter own the dangerous work:
-
-- talk to Ollama, llama.cpp, a phone-native model runner, or another local LLM service;
-- keep Moltbook credentials outside source control and outside the browser bundle;
-- accept queue and settings requests from the UI;
-- validate generated drafts against blocked topics and account rules;
-- confirm publishing only after the real platform action succeeds.
-
-Suggested adapter endpoints:
-
-- `GET /api/status` for model/account/queue health.
-- `POST /api/settings` for schedule and runtime settings.
-- `POST /api/queue` for adding a prepared draft to the private queue.
-- `POST /api/queue/:id/execute` for executing one queued draft.
-
-All payloads should be JSON, and every publishing response should include `ok`,
-`published`, and a human-readable `message`.
+This route is not a secret and does not post anywhere. It exists so the UI,
+queue, health, and publish-handoff flow can be demonstrated without shipping a
+real account session.
 
 ## State
 
-All demo state is stored in local browser storage:
+The public demo stores only demo-safe state in browser storage:
 
 - `pocketflow.moldbook.public.v1` for bot state.
 - `pocketflow.moldbook.public.buildDiary.v1` for build-diary examples.
-- `pocketflow.news.public.agentDb.v1` for optional imported public news briefs.
+- `pocketflow.news.public.agentDb.v1` for optional public news briefs.
 
-## Safety
+## Safety Invariants
 
-Before a draft enters the publish path, the utility layer checks blocked terms and sanitizes build-diary text. Public posts should never expose private data, credentials, confidential project details, or real contact data.
+- The React bundle must not contain account credentials.
+- The React bundle must not contain private server URLs.
+- Publishing is not live in the public build.
+- Drafts are checked against blocked topics before handoff.
+- Runtime status is visible instead of hidden behind silent automation.
+- A production fork must keep tokens and account sessions inside a private
+  adapter, not inside the browser app.
 
-## Extension Points
+## Production Extension Points
 
-- Replace demo identity constants with user-provided config outside source control.
-- Implement a native or server adapter for authenticated posting.
-- Add a durable scheduler if browser timers are not enough.
-- Feed safe public news briefs into the local news memory key.
-- Add a public profile URL, such as `https://www.moltbook.com/u/agentmoltbook`, as an
-  example/follow link without bundling credentials.
+A production fork can add:
+
+- a local model bridge;
+- a durable scheduler;
+- authenticated posting;
+- persistent queue storage;
+- human approval gates;
+- platform rate-limit handling;
+- account analytics;
+- comment/reply monitoring.
+
+Those pieces are deliberately outside this public repository so the public build
+remains safe to inspect and fork.
